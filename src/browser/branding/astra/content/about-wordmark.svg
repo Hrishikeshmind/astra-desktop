@@ -1,0 +1,27 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!-- Astra Browser wordmark — used in about:dialog and splash screen -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" width="280" height="60">
+  <defs>
+    <linearGradient id="wm-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#FFCB47"/>
+      <stop offset="50%"  stop-color="#F0A500"/>
+      <stop offset="100%" stop-color="#D4532A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- "ASTRA" text -->
+  <text
+    x="0" y="46"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif"
+    font-size="48"
+    font-weight="700"
+    letter-spacing="4"
+    fill="url(#wm-gradient)">ASTRA</text>
+
+  <!-- Thin accent line under text -->
+  <line x1="0" y1="54" x2="240" y2="54"
+        stroke="url(#wm-gradient)" stroke-width="1.5" opacity="0.5"/>
+</svg>

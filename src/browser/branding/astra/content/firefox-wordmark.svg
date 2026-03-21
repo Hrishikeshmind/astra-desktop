@@ -1,0 +1,20 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!-- Astra Browser — replaces firefox-wordmark.svg in browser chrome -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 30" width="140" height="30">
+  <defs>
+    <linearGradient id="fw-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#FFCB47"/>
+      <stop offset="100%" stop-color="#D4532A"/>
+    </linearGradient>
+  </defs>
+  <text
+    x="0" y="24"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="2"
+    fill="url(#fw-gradient)">Astra</text>
+</svg>

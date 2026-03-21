@@ -1,0 +1,56 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/*
+ * Astra Browser — about:dialog branding styles
+ * Frosted glass panel with Indian sunset palette
+ */
+
+#aboutDialogContainer {
+  /* Deep indigo night sky base */
+  background-color: #0D0820;
+  background-image:
+    radial-gradient(ellipse at 20% 40%, rgba(74, 27, 140, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(212, 83, 42, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 10%, rgba(139, 34, 82, 0.25) 0%, transparent 45%);
+  color: #F5E6C8;
+  color-scheme: dark;
+}
+
+#rightBox {
+  background-size: auto 44px;
+  margin-inline: 30px;
+  padding-top: 64px;
+}
+
+#bottomBox {
+  background-color: rgba(26, 16, 53, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(240, 165, 0, 0.15);
+  padding: 15px 10px;
+}
+
+/* Version text — warm parchment */
+#version {
+  color: rgba(245, 230, 200, 0.75);
+  font-size: 12px;
+}
+
+/* Links */
+.text-link {
+  color: #F0A500;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.text-link:hover {
+  color: #FFCB47;
+  text-decoration: underline;
+}
+
+/* Logo sizing */
+#leftBox {
+  min-width: 130px;
+}
