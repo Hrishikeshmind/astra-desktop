@@ -1,0 +1,23 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# =============================================================================
+# Astra Browser — macOS mozconfig
+# Inherits from configs/common/mozconfig
+# =============================================================================
+
+. "$SURFER_CONFIGS_DIR/common/mozconfig"
+
+# Apple Silicon (arm64) — primary target for modern Macs
+ac_add_options --target=aarch64-apple-darwin
+
+# macOS universal binary: arm64 + x86_64
+# Uncomment to build a fat binary (slower, larger)
+# ac_add_options --enable-universal-binary
+
+# macOS SDK (set by MozillaBuild / xcrun automatically)
+# ac_add_options --with-macos-sdk=/path/to/MacOSX.sdk
+
+# App bundle name
+ac_add_options --with-app-name=Astra\ Browser

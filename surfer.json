@@ -9,7 +9,8 @@
   },
   "buildOptions": {
     "windowsUseSymbolicLinks": false,
-    "profileDirectory": "astra"
+    "profileDirectory": "astra",
+    "mozconfig": "configs/common/mozconfig"
   },
   "brands": {
     "release": {
