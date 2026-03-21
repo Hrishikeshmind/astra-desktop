@@ -1,0 +1,28 @@
+{
+  "name": "Astra Browser",
+  "vendor": "Astra Browser Project",
+  "appId": "in.astrabrowser.desktop",
+  "binaryName": "astra",
+  "version": {
+    "product": "firefox"
+  },
+  "buildOptions": {
+    "windowsUseSymbolicLinks": false,
+    "profileDirectory": "astra"
+  },
+  "brands": {
+    "release": {
+      "backgroundColor": "#1A1035",
+      "brandShorterName": "Astra",
+      "brandShortName": "Astra Browser",
+      "brandFullName": "Astra Browser",
+      "release": {
+        "displayVersion": "1.0.0"
+      }
+    }
+  },
+  "license": {
+    "licenseType": "MPL-2.0",
+    "ignoredFiles": [".*\\.json"]
+  }
+}

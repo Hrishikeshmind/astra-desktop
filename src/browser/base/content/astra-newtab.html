@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>New Tab</title>
+  <link rel="stylesheet" href="chrome://browser/skin/astra/astra.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(74, 27, 140, 0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(212, 83, 42, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(139, 34, 82, 0.3) 0%, transparent 50%),
+        linear-gradient(135deg, #0D0820 0%, #1A1035 40%, #2D1B69 100%);
+      min-height: 100vh;
+      color: #F5E6C8;
+      overflow-x: hidden;
+    }
+
+    /* ---------- Search Bar ---------- */
+    #search-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 24px 40px;
+    }
+
+    #greeting {
+      font-size: 32px;
+      font-weight: 300;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 20px rgba(240, 165, 0, 0.3);
+    }
+
+    #greeting strong {
+      background: linear-gradient(135deg, #F0A500, #D4532A);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
+    #date-time {
+      font-size: 13px;
+      color: rgba(245, 230, 200, 0.55);
+      margin-bottom: 36px;
+    }
+
+    #search-wrapper {
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+    }
+
+    #search-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 52px 0 20px;
+      background: rgba(26, 16, 53, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(240, 165, 0, 0.2);
+      border-radius: 28px;
+      color: #F5E6C8;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 200ms, box-shadow 200ms;
+    }
+
+    #search-input::placeholder {
+      color: rgba(245, 230, 200, 0.4);
+    }
+
+    #search-input:focus {
+      border-color: #F0A500;
+      box-shadow: 0 0 16px rgba(240, 165, 0, 0.3);
+    }
+
+    #search-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(245, 230, 200, 0.6);
+      font-size: 18px;
+      padding: 6px;
+      border-radius: 50%;
+      transition: color 150ms;
+    }
+
+    #search-btn:hover { color: #F0A500; }
+
+    /* ---------- Search Engine Selector ---------- */
+    #engine-pills {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .engine-pill {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(240, 165, 0, 0.2);
+      background: rgba(26, 16, 53, 0.5);
+      color: rgba(245, 230, 200, 0.65);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 150ms;
+    }
+
+    .engine-pill:hover,
+    .engine-pill.active {
+      border-color: #F0A500;
+      color: #F0A500;
+      background: rgba(240, 165, 0, 0.1);
+    }
+
+    /* ---------- Pinned Sites ---------- */
+    #pinned-section {
+      padding: 0 24px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(245, 230, 200, 0.4);
+      margin-bottom: 12px;
+    }
+
+    #pinned-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 12px;
+    }
+
+    .pinned-site {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 8px 12px;
+      border-radius: 14px;
+      background: rgba(26, 16, 53, 0.6);
+      border: 1px solid rgba(240, 165, 0, 0.1);
+      cursor: pointer;
+      transition: background 200ms, transform 150ms, box-shadow 200ms;
+      text-decoration: none;
+    }
+
+    .pinned-site:hover {
+      background: rgba(45, 27, 105, 0.6);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .pinned-site img {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+    }
+
+    .pinned-site span {
+      font-size: 11px;
+      color: rgba(245, 230, 200, 0.65);
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Search Section -->
+  <section id="search-section">
+    <h1 id="greeting">Namaste, <strong>Explorer</strong></h1>
+    <p id="date-time"></p>
+
+    <div id="search-wrapper">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search the web or type a URL…"
+        autocomplete="off"
+        autofocus
+      />
+      <button id="search-btn" aria-label="Search">⌕</button>
+    </div>
+
+    <div id="engine-pills">
+      <button class="engine-pill active" data-engine="google">Google</button>
+      <button class="engine-pill" data-engine="duckduckgo">DuckDuckGo</button>
+      <button class="engine-pill" data-engine="bing">Bing</button>
+      <button class="engine-pill" data-engine="brave">Brave</button>
+    </div>
+  </section>
+
+  <!-- Pinned Sites -->
+  <section id="pinned-section">
+    <p class="section-title">Pinned Sites</p>
+    <div id="pinned-grid"></div>
+  </section>
+
+  <script>
+    // ---- Date & Time ----
+    function updateClock() {
+      const now = new Date();
+      const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const date = now.toLocaleDateString('en-IN', opts);
+      const time = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('date-time').textContent = `${time}  ·  ${date}`;
+    }
+    updateClock();
+    setInterval(updateClock, 10000);
+
+    // ---- Greeting ----
+    const hour = new Date().getHours();
+    const greetingMap = [
+      [5, 'Good Morning'],
+      [12, 'Good Afternoon'],
+      [17, 'Good Evening'],
+      [21, 'Good Night'],
+    ];
+    let greetText = 'Namaste';
+    for (const [h, g] of greetingMap) {
+      if (hour < h) { greetText = g; break; }
+    }
+    document.getElementById('greeting').innerHTML =
+      `${greetText}, <strong>Explorer</strong>`;
+
+    // ---- Search Engines ----
+    const engines = {
+      google:     q => `https://www.google.co.in/search?q=${encodeURIComponent(q)}`,
+      duckduckgo: q => `https://duckduckgo.com/?q=${encodeURIComponent(q)}`,
+      bing:       q => `https://www.bing.com/search?q=${encodeURIComponent(q)}`,
+      brave:      q => `https://search.brave.com/search?q=${encodeURIComponent(q)}`,
+    };
+    let activeEngine = 'google';
+
+    document.querySelectorAll('.engine-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.engine-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeEngine = pill.dataset.engine;
+      });
+    });
+
+    function doSearch() {
+      const q = document.getElementById('search-input').value.trim();
+      if (!q) return;
+      const isUrl = /^(https?:\/\/|www\.)/i.test(q);
+      window.location.href = isUrl ? (q.startsWith('http') ? q : `https://${q}`) : engines[activeEngine](q);
+    }
+
+    document.getElementById('search-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doSearch();
+    });
+    document.getElementById('search-btn').addEventListener('click', doSearch);
+
+    // ---- Pinned Sites ----
+    const DEFAULT_SITES = [
+      { url: 'https://www.google.co.in',  label: 'Google' },
+      { url: 'https://www.youtube.com',   label: 'YouTube' },
+      { url: 'https://www.flipkart.com',  label: 'Flipkart' },
+      { url: 'https://www.amazon.in',     label: 'Amazon' },
+      { url: 'https://mail.google.com',   label: 'Gmail' },
+      { url: 'https://www.irctc.co.in',   label: 'IRCTC' },
+      { url: 'https://www.zerodha.com',   label: 'Zerodha' },
+      { url: 'https://twitter.com',       label: 'Twitter/X' },
+    ];
+
+    const sites = (() => {
+      try { return JSON.parse(localStorage.getItem('astra_pinned') || 'null') || DEFAULT_SITES; }
+      catch { return DEFAULT_SITES; }
+    })();
+
+    const grid = document.getElementById('pinned-grid');
+    for (const site of sites) {
+      const a = document.createElement('a');
+      a.className = 'pinned-site';
+      a.href = site.url;
+
+      const hostname = new URL(site.url).hostname;
+      const img = document.createElement('img');
+      img.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+      img.onerror = () => { img.src = ''; img.style.display = 'none'; };
+
+      const span = document.createElement('span');
+      span.textContent = site.label;
+
+      a.appendChild(img);
+      a.appendChild(span);
+      grid.appendChild(a);
+    }
+  </script>
+</body>
+</html>

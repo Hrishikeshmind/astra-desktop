@@ -1,0 +1,17 @@
+{
+  "name": "astra-browser",
+  "version": "1.0.0",
+  "description": "Astra Browser — A Firefox-based browser built for Indian users with a frosted glass UI and warm sunset aesthetic.",
+  "scripts": {
+    "setup": "surfer setup",
+    "build": "surfer build",
+    "package": "surfer package",
+    "download": "surfer download",
+    "import": "surfer import",
+    "export": "surfer export"
+  },
+  "devDependencies": {
+    "@zen-browser/surfer": "latest"
+  },
+  "license": "MPL-2.0"
+}
