@@ -1,0 +1,8 @@
+node_modules/
+engine/
+.surfer/
+dist/
+*.obj
+*.pdb
+*.log
+.DS_Store
