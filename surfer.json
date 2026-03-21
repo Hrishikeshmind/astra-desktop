@@ -4,7 +4,8 @@
   "appId": "in.astrabrowser.desktop",
   "binaryName": "astra",
   "version": {
-    "product": "firefox"
+    "product": "firefox",
+    "version": "148.0.2"
   },
   "buildOptions": {
     "windowsUseSymbolicLinks": false,
