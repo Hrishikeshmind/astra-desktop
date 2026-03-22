@@ -1,91 +1,16 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-# =============================================================================
-# Astra Browser — mozconfig
-#
-# Reference architecture: @zen-browser/surfer build system
-# Base: Mozilla Firefox 148.0.2
-# Target: Windows x86_64 (primary), Linux x86_64, macOS arm64
-# =============================================================================
-
-# -----------------------------------------------------------------------------
-# 1. Project
-# -----------------------------------------------------------------------------
-. "$topsrcdir/browser/config/mozconfig"
-
-# -----------------------------------------------------------------------------
-# 2. Branding
-# -----------------------------------------------------------------------------
-ac_add_options --with-branding=browser/branding/astra
-ac_add_options --with-app-name=astra
-ac_add_options --with-app-basename=Astra
-
-# -----------------------------------------------------------------------------
-# 3. Artifact Builds  (fast builds — downloads pre-compiled C++ artifacts,
-#    only recompiles JS/CSS/chrome changes)
-# -----------------------------------------------------------------------------
+ac_add_options --enable-project=browser
 ac_add_options --enable-artifact-builds
 ac_add_options --disable-compile-environment
-
-# -----------------------------------------------------------------------------
-# 5. Telemetry — strip all Mozilla data collection
-# -----------------------------------------------------------------------------
-ac_add_options --disable-telemetry
-ac_add_options --disable-health-report
-ac_add_options --disable-normandy
-ac_add_options --disable-backgroundtasks
-
-# -----------------------------------------------------------------------------
-# 6. Crash Reporter — disabled for development builds
-#    (re-enable for production releases)
-# -----------------------------------------------------------------------------
-ac_add_options --disable-crashreporter
-
-# -----------------------------------------------------------------------------
-# 7. Privacy — disable services and features that phone home
-# -----------------------------------------------------------------------------
-# No Mozilla location service key (we use browser-native geolocation prompts)
-ac_add_options --without-google-location-service-api-keyfile
-ac_add_options --without-google-safebrowsing-api-keyfile
-ac_add_options --without-mozilla-api-keyfile
-
-# Disable Pocket integration
-ac_add_options --disable-pocket
-
-# Disable Firefox Sync / FxA (can re-enable later with our own sync server)
-ac_add_options --disable-synced-tabs
-
-# -----------------------------------------------------------------------------
-# 8. Update channel
-# -----------------------------------------------------------------------------
-# Use "release" channel so prefs and branding resolve correctly
-ac_add_options --enable-update-channel=release
-export MOZ_UPDATE_CHANNEL=release
-
-# -----------------------------------------------------------------------------
-# 9. Locale — India defaults
-# -----------------------------------------------------------------------------
-# Build English (India) locale as primary, ship Hindi strings too
-ac_add_options --with-l10n-base=../l10n
-export MOZ_CHROME_MULTILOCALE="en-IN hi"
-
-# -----------------------------------------------------------------------------
-# 10. Distribution preferences
-#     Surfer copies files from configs/common/ into the build; this registers
-#     our astra.js pref file so it is loaded by Firefox at startup.
-# -----------------------------------------------------------------------------
+ac_add_options --with-app-name=astra
+ac_add_options --with-app-basename=Astra
+ac_add_options --with-branding=browser/branding/astra
 ac_add_options --with-distribution-id=in.astrabrowser
+ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
+ac_add_options --disable-tests
+ac_add_options --target=x86_64-pc-windows-msvc
+ac_add_options --disable-debug
+ac_add_options --enable-update-channel=release
 
-# -----------------------------------------------------------------------------
-# 11. Developer-friendly options (override for CI/release builds)
-# -----------------------------------------------------------------------------
-# Keep symbols for local debugging; strip in CI
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/../obj-astra
-
-# Faster incremental builds — skip clobber unless forced
 mk_add_options AUTOCLOBBER=0
-
-# Parallel build jobs (0 = auto-detect CPU count)
-mk_add_options MOZ_MAKE_FLAGS="-j0"
