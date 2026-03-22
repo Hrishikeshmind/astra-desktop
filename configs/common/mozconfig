@@ -35,9 +35,6 @@ ac_add_options --disable-compile-environment
 # Enable WebRender (GPU compositor)
 ac_add_options --enable-webrender
 
-# Release-level optimisation for local builds
-ac_add_options --enable-optimize
-
 # Enable MOZ_DATA_REPORTING guard so we can strip data reporting at build time
 export MOZ_DATA_REPORTING=0
 
