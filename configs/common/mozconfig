@@ -30,12 +30,6 @@ ac_add_options --enable-artifact-builds
 ac_add_options --disable-compile-environment
 
 # -----------------------------------------------------------------------------
-# 4. Optimisation
-# -----------------------------------------------------------------------------
-# Enable WebRender (GPU compositor)
-ac_add_options --enable-webrender
-
-# -----------------------------------------------------------------------------
 # 5. Telemetry — strip all Mozilla data collection
 # -----------------------------------------------------------------------------
 ac_add_options --disable-telemetry
