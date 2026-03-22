@@ -35,9 +35,6 @@ ac_add_options --disable-compile-environment
 # Enable WebRender (GPU compositor)
 ac_add_options --enable-webrender
 
-# Enable MOZ_DATA_REPORTING guard so we can strip data reporting at build time
-export MOZ_DATA_REPORTING=0
-
 # -----------------------------------------------------------------------------
 # 5. Telemetry — strip all Mozilla data collection
 # -----------------------------------------------------------------------------
@@ -45,10 +42,6 @@ ac_add_options --disable-telemetry
 ac_add_options --disable-health-report
 ac_add_options --disable-normandy
 ac_add_options --disable-backgroundtasks
-
-export MOZ_TELEMETRY_REPORTING=
-export MOZ_SERVICES_HEALTHREPORT=
-export MOZ_DATA_REPORTING=
 
 # -----------------------------------------------------------------------------
 # 6. Crash Reporter — disabled for development builds
@@ -69,10 +62,6 @@ ac_add_options --disable-pocket
 
 # Disable Firefox Sync / FxA (can re-enable later with our own sync server)
 ac_add_options --disable-synced-tabs
-
-# Disable sponsored content / ads infrastructure
-export MOZ_NORMANDY=0
-export MOZ_SERVICES_SYNC=0
 
 # -----------------------------------------------------------------------------
 # 8. Update channel
