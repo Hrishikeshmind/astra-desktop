@@ -1,0 +1,13 @@
+diff --git a/browser/base/content/browser-box.inc.xhtml b/browser/base/content/browser-box.inc.xhtml
+index 2faed30e09511c381051bc40910a883d1d7bc10d..30c5354e4fefdf6cb054baf3655647d78ad8a193 100644
+--- a/browser/base/content/browser-box.inc.xhtml
++++ b/browser/base/content/browser-box.inc.xhtml
+@@ -2,6 +2,8 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++<vbox id="astra-sidebar-container"
++      style="width:220px;min-width:220px;"/>
+ <hbox flex="1" id="browser">
+   <box context="sidebar-context-menu" id="sidebar-main" hidden="true">
+     <html:sidebar-main flex="1">

@@ -1,14 +1,12 @@
+# Astra Browser - Common mozconfig
+# Keep minimal - surfer adds most flags automatically
+
 ac_add_options --enable-project=browser
-ac_add_options --with-app-name=astra
-ac_add_options --with-app-basename=Astra
-ac_add_options --with-branding=browser/branding/astra
-ac_add_options --with-distribution-id=in.astrabrowser
 ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
 ac_add_options --disable-tests
-ac_add_options --target=x86_64-pc-windows-msvc
 ac_add_options --disable-debug
 ac_add_options --enable-update-channel=release
 
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/../obj-astra
-mk_add_options AUTOCLOBBER=0
+mk_add_options AUTOCLOBBER=1

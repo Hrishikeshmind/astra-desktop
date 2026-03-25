@@ -1,9 +1,10 @@
-node_modules/
 engine/
+node_modules/
+obj-astra/
+obj-*/
 .surfer/
 dist/
 *.obj
-*.pdb
-*.log
-.DS_Store
-.claude/settings.local.json
+*.o
+*.pyc
+__pycache__/

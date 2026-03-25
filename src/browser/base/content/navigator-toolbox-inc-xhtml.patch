@@ -1,0 +1,14 @@
+diff --git a/browser/base/content/navigator-toolbox.inc.xhtml b/browser/base/content/navigator-toolbox.inc.xhtml
+index 4d4223c508560136aba220adb18528aac913a188..df6f93dbf17ad6c4ef13460188435dde25ea681b 100644
+--- a/browser/base/content/navigator-toolbox.inc.xhtml
++++ b/browser/base/content/navigator-toolbox.inc.xhtml
+@@ -29,7 +29,8 @@
+            mode="icons"
+            data-l10n-id="tabs-toolbar"
+            context="toolbar-context-menu"
+-           flex="1">
++           flex="1"
++           hidden="true">
+ 
+     <hbox class="titlebar-spacer" type="pre-tabs"/>
+ 

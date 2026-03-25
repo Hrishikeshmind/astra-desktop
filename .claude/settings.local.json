@@ -2,7 +2,36 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(npx surfer:*)"
+      "Bash(npx surfer:*)",
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "Bash(tar --version)",
+      "Bash(where tar:*)",
+      "Bash(1 ls:*)",
+      "Bash(while tasklist:*)",
+      "Bash(do sleep:*)",
+      "Bash(1 echo:*)",
+      "Bash(find C:/Users/HRISHIKESH/astra-desktop -maxdepth 3 -name *.patch)",
+      "Bash(find C:/Users/HRISHIKESH/astra-desktop/node_modules/@zen-browser/surfer/dist -name export* -o -name *patch*)",
+      "Bash(find C:/Users/HRISHIKESH/astra-desktop/node_modules/@zen-browser/surfer/dist -name constants*)",
+      "Bash(find C:/Users/HRISHIKESH/astra-desktop/node_modules/@zen-browser/surfer/dist -name *.js)",
+      "Bash(xargs grep:*)",
+      "Bash(wc:*)",
+      "Bash(\"C:/mozilla-build/msys2/usr/bin/bash.exe\" --login -c \"npm run build\" 2>&1)",
+      "Bash(where npm:*)",
+      "Bash(where node:*)",
+      "Bash(where python:*)",
+      "Bash(\"C:/mozilla-build/msys2/usr/bin/bash.exe\" --login -c \"export PATH=/c/nvm4w/nodejs:/c/Program Files/nodejs:$PATH && npm run build 2>&1\")",
+      "Bash(\"C:/mozilla-build/msys2/usr/bin/bash.exe\" --login -c \"export HOME=/c/Users/HRISHIKESH && export PATH=/c/mozilla-build/python3:/c/nvm4w/nodejs:\\\\$PATH && npm run build 2>&1\")",
+      "Bash(cd:*)",
+      "Bash(tasklist)",
+      "Bash(findstr -i \"rm\\\\|bash\\\\|git\")",
+      "Bash(TaskOutput)",
+      "Bash(git ls-remote:*)",
+      "Bash(ls \"C:/Users/HRISHIKESH/astra-desktop/engine/browser/base/content/\"*.xhtml)",
+      "Bash(\"C:/mozilla-build/bin/7z.exe\" l:*)",
+      "Bash(\"C:/mozilla-build/msys2/usr/bin/tar.exe\" --strip-components=2 -xf \"C:/Users/HRISHIKESH/astra-desktop/.surfer/engine/firefox-148.0.2.source.tar\" -C \"C:/Users/HRISHIKESH/astra-desktop/engine\" \"firefox-148.0.2/browser\" 2>&1)",
+      "Bash(cp:*)"
     ]
   }
 }

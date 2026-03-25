@@ -1,30 +1,29 @@
 {
-  "name": "Astra Browser",
-  "vendor": "Astra Browser Project",
-  "appId": "in.astrabrowser.desktop",
   "binaryName": "astra",
   "version": {
     "product": "firefox",
-    "version": "148.0.2"
+    "version": "148.0.2",
+    "candidate": "148.0.2"
   },
   "buildOptions": {
-    "windowsUseSymbolicLinks": false,
-    "profileDirectory": "astra",
-    "mozconfig": "configs/common/mozconfig"
+    "generateBranding": true
   },
+  "addons": {},
   "brands": {
     "release": {
-      "backgroundColor": "#1A1035",
+      "backgroundColor": "#FF6B35",
       "brandShorterName": "Astra",
-      "brandShortName": "Astra Browser",
+      "brandShortName": "Astra",
       "brandFullName": "Astra Browser",
       "release": {
-        "displayVersion": "1.0.0"
+        "displayVersion": "1.0.0",
+        "github": {
+          "repo": "Hrishikeshmind/astra-desktop"
+        }
       }
     }
   },
   "license": {
-    "licenseType": "MPL-2.0",
-    "ignoredFiles": [".*\\.json"]
+    "ignoredFiles": []
   }
 }

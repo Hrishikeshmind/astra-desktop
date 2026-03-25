@@ -1,0 +1,19 @@
+diff --git a/browser/base/content/browser.xhtml b/browser/base/content/browser.xhtml
+index 832d98f911e0bd0e231421332a521bfefea72ef8..1fa37a391018d456393858a756e4642c9ced1d32 100644
+--- a/browser/base/content/browser.xhtml
++++ b/browser/base/content/browser.xhtml
+@@ -50,6 +50,7 @@
+   <link rel="stylesheet" href="chrome://browser/skin/translations/panel.css" />
+   <link rel="stylesheet" href="chrome://browser/skin/places/tree-icons.css" />
+   <link rel="stylesheet" href="chrome://browser/skin/places/editBookmark.css" />
++  <link rel="stylesheet" href="chrome://browser/skin/astra/astra.css" />
+   <link
+     rel="stylesheet"
+     href="chrome://global/content/resistfingerprinting/letterboxing.css"
+@@ -150,5 +151,6 @@
+ 
+   <!-- Put it at the very end to make sure it's not covered by anything. -->
+   <html:div id="fullscr-toggler" hidden="hidden"/>
++  <script src="chrome://browser/content/astra-sidebar.js"/>
+ </html:body>
+ </html>

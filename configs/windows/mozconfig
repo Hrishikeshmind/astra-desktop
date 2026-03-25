@@ -1,17 +1,4 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# Astra Browser - Windows mozconfig
 
-# =============================================================================
-# Astra Browser — Windows mozconfig
-# Inherits from configs/common/mozconfig
-# =============================================================================
-
-. "C:/Users/HRISHIKESH/astra-desktop/configs/common/mozconfig"
-
-# Windows x86_64 target
 ac_add_options --target=x86_64-pc-windows-msvc
-
-# Use symbolic links in the build system where available (faster on NTFS)
-# Disabled by default — enable if you have Developer Mode on Windows 10+
-# ac_add_options --enable-windows-symlinks
+ac_add_options --disable-debug-symbols

@@ -1,24 +1,4 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# Astra Browser - Linux mozconfig
 
-# =============================================================================
-# Astra Browser — Linux mozconfig
-# Inherits from configs/common/mozconfig
-# =============================================================================
-
-. "$SURFER_CONFIGS_DIR/common/mozconfig"
-
-# Linux x86_64 target
 ac_add_options --target=x86_64-pc-linux-gnu
-
-# Use system libraries where available (reduces build size on Linux)
-ac_add_options --with-system-zlib
-ac_add_options --with-system-bz2
-
-# GTK3 (required for modern Linux desktop integration)
-ac_add_options --enable-default-toolkit=cairo-gtk3-wayland
-
-# PulseAudio / PipeWire audio
-ac_add_options --enable-alsa
-ac_add_options --enable-pulseaudio
+ac_add_options --disable-debug-symbols
