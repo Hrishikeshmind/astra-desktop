@@ -1,5 +1,5 @@
 diff --git a/browser/base/content/browser.xhtml b/browser/base/content/browser.xhtml
-index 832d98f911e0bd0e231421332a521bfefea72ef8..1fa37a391018d456393858a756e4642c9ced1d32 100644
+index 832d98f911e0bd0e231421332a521bfefea72ef8..8f86731244b66df06be3478d326878cda9dbd7ec 100644
 --- a/browser/base/content/browser.xhtml
 +++ b/browser/base/content/browser.xhtml
 @@ -50,6 +50,7 @@
@@ -10,10 +10,11 @@ index 832d98f911e0bd0e231421332a521bfefea72ef8..1fa37a391018d456393858a756e4642c
    <link
      rel="stylesheet"
      href="chrome://global/content/resistfingerprinting/letterboxing.css"
-@@ -150,5 +151,6 @@
+@@ -150,5 +151,7 @@
  
    <!-- Put it at the very end to make sure it's not covered by anything. -->
    <html:div id="fullscr-toggler" hidden="hidden"/>
 +  <script src="chrome://browser/content/astra-sidebar.js"/>
++  <script src="chrome://browser/content/astra-ai.js"/>
  </html:body>
  </html>

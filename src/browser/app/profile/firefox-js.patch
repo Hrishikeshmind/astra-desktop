@@ -1,0 +1,16 @@
+diff --git a/browser/app/profile/firefox.js b/browser/app/profile/firefox.js
+index e85e7c1c78b9cfcafa3a0c9b49ecc5886e9ce240..376d48f8a9f297d9c9050b9dbd87a470dfc390a5 100644
+--- a/browser/app/profile/firefox.js
++++ b/browser/app/profile/firefox.js
+@@ -3597,6 +3597,11 @@ pref("toolkit.rust-components.logging.internal-level", "Warn");
+ // Settings Redesign 2025 prefs
+ pref("browser.settings-redesign.enabled", false);
+ 
++// Astra: OS-level transparency (Windows Mica/Acrylic + cross-platform)
++pref("widget.windows.mica", true);
++pref("widget.transparent-windows", true);
++pref("browser.tabs.allow_transparent_browser", true);
++
+ // A preference that will be locked to reflect whether this build has support
+ // for XDG Config Home handling. Mostly used to be able to keep tests around
+ // in case of a backout of the feature

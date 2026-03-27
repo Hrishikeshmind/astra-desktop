@@ -1,0 +1,13 @@
+diff --git a/browser/themes/shared/jar.inc.mn b/browser/themes/shared/jar.inc.mn
+index ccae208d64af19d15b85f72a4a38ea95448ed9e9..e51ee288cba50fd2b35d4e95e39c4ac1279a409b 100644
+--- a/browser/themes/shared/jar.inc.mn
++++ b/browser/themes/shared/jar.inc.mn
+@@ -7,6 +7,8 @@
+ # be specified once. As a result, the source file paths are relative
+ # to the location of the actual manifest.
+ 
++  skin/classic/browser/astra/astra.css                         (../astra/astra.css)
++  skin/classic/browser/astra/wallpaper.jpg                     (../astra/wallpaper.jpg)
+   skin/classic/browser/aboutFrameCrashed.css                   (../shared/aboutFrameCrashed.css)
+   skin/classic/browser/aboutRestartRequired.css                (../shared/aboutRestartRequired.css)
+   skin/classic/browser/aboutSessionRestore.css                 (../shared/aboutSessionRestore.css)

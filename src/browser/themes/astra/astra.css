@@ -2,500 +2,919 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* ==========================================================================
-   Astra Browser — Main Theme
-   Frosted Glass UI with Indian Sunset Palette
-   ========================================================================== */
+/* ═══════════════════════════════════════════════════════════════════
+   ASTRA BROWSER — Complete UI CSS
+   Pixel-perfect macOS-style frosted glass sidebar
+   Spec: Arc Browser × macOS Sonoma × Indian Sunset wallpaper
+   ═══════════════════════════════════════════════════════════════════
+
+   SECTIONS:
+   01  CSS Variables
+   02  Firefox Chrome Reset
+   03  Window + Content Wallpaper
+   04  Sidebar Container (light glass panel)
+   05  Traffic Lights (macOS ●●●)
+   06  New Tab Button
+   07  Navigation Items
+   08  Section Labels
+   09  Pinned Sites
+   10  Workspaces
+   11  Spacer + Profile
+   12  Bottom Icon Bar
+   13  Layout: #browser flex row
+   14  Astra Logo Card (center of content)
+   15  Custom Top Bar (replaces Firefox nav-bar)
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────
+   01 · CSS VARIABLES
+   ───────────────────────────────────────────── */
 
 :root {
-  /* --- Astra Color Palette: Warm Indian Sunset --- */
-  --astra-sunset-deep:      #1A1035;   /* Deep indigo night sky */
-  --astra-sunset-purple:    #2D1B69;   /* Twilight purple */
-  --astra-sunset-violet:    #4A1B8C;   /* Vibrant violet */
-  --astra-sunset-magenta:   #8B2252;   /* Sunset magenta */
-  --astra-sunset-orange:    #D4532A;   /* Warm sunset orange */
-  --astra-sunset-gold:      #F0A500;   /* Golden hour */
-  --astra-sunset-amber:     #FFCB47;   /* Amber glow */
+  /* Sidebar dimensions */
+  --astra-sidebar-width:       240px;
 
-  /* --- Frosted Glass Variables --- */
-  --astra-glass-bg:         rgba(26, 16, 53, 0.75);
-  --astra-glass-bg-light:   rgba(45, 27, 105, 0.55);
-  --astra-glass-border:     rgba(240, 165, 0, 0.18);
-  --astra-glass-blur:       16px;
-  --astra-glass-shadow:     0 8px 32px rgba(0, 0, 0, 0.45);
+  /* Dynamic accent — updated by AstraWallpaper._extractColor() */
+  --astra-accent-color:        rgba(255, 107, 53, 0.8);
 
-  /* --- Text Colors --- */
-  --astra-text-primary:     #F5E6C8;   /* Warm parchment */
-  --astra-text-secondary:   rgba(245, 230, 200, 0.7);
-  --astra-text-muted:       rgba(245, 230, 200, 0.45);
+  /* Glass surface — LIGHT frosted panel */
+  --astra-glass-bg:            rgba(255, 255, 255, 0.15);
+  --astra-glass-blur:          blur(24px) saturate(180%);
+  --astra-glass-border:        1px solid rgba(255, 255, 255, 0.20);
+  --astra-glass-shadow:        2px 0 24px rgba(0, 0, 0, 0.08);
 
-  /* --- Accent --- */
-  --astra-accent:           #F0A500;
-  --astra-accent-hover:     #FFCB47;
-  --astra-accent-glow:      0 0 12px rgba(240, 165, 0, 0.5);
+  /* Text — dark text on light glass */
+  --astra-text-primary:        rgba(0, 0, 0, 0.85);
+  --astra-text-secondary:      rgba(0, 0, 0, 0.65);
+  --astra-text-hint:           rgba(0, 0, 0, 0.35);
 
-  /* --- UI Dimensions --- */
-  --astra-sidebar-width:    240px;
-  --astra-sidebar-mini-width: 56px;
-  --astra-tab-height:       36px;
-  --astra-toolbar-height:   48px;
-  --astra-border-radius:    12px;
-  --astra-border-radius-sm: 8px;
+  /* Interaction states */
+  --astra-hover-bg:            rgba(0, 0, 0, 0.06);
+  --astra-active-bg:           rgba(0, 0, 0, 0.10);
+  --astra-focus-ring:          rgba(0, 122, 255, 0.40);
 
-  /* --- Transitions --- */
-  --astra-transition-fast:  150ms ease;
-  --astra-transition-base:  250ms ease;
-  --astra-transition-slow:  400ms ease;
+  /* Accent */
+  --astra-accent:              #FF6B35;
+
+  /* Border radius */
+  --astra-r-sm:                8px;
+  --astra-r-md:                10px;
+  --astra-r-lg:                14px;
+  --astra-r-xl:                20px;
+
+  /* System font stack (matches macOS) */
+  --astra-font:                -apple-system, BlinkMacSystemFont,
+                               "SF Pro Text", "Segoe UI",
+                               system-ui, sans-serif;
+
+  /* Wallpaper colours */
+  --wall-warm:                 rgba(220, 160, 80, 0.88);
+  --wall-mid:                  rgba(180, 140, 100, 0.70);
+  --wall-cool:                 rgba(120, 150, 140, 0.80);
+  --wall-deep:                 rgba(70, 100, 90, 0.90);
+
+  /* Transitions */
+  --t-fast:                    0.12s ease;
+  --t-base:                    0.20s ease;
+  --t-spring:                  0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ==========================================================================
-   Sidebar Navigation
-   ========================================================================== */
 
-#astra-sidebar {
-  width: var(--astra-sidebar-width);
-  min-height: 100vh;
-  background: var(--astra-glass-bg);
-  backdrop-filter: blur(var(--astra-glass-blur)) saturate(1.4);
-  -webkit-backdrop-filter: blur(var(--astra-glass-blur)) saturate(1.4);
-  border-right: 1px solid var(--astra-glass-border);
-  box-shadow: var(--astra-glass-shadow);
-  display: flex;
-  flex-direction: column;
-  padding: 12px 8px;
-  transition: width var(--astra-transition-base);
-  position: relative;
-  z-index: 100;
+/* ─────────────────────────────────────────────
+   02 · FIREFOX CHROME RESET
+   Hide every default Firefox toolbar/tab element.
+   ───────────────────────────────────────────── */
+
+/* Kill native tab strip — we own tabs */
+#TabsToolbar,
+#TabsToolbar-customization-target,
+.tabbrowser-arrowscrollbox,
+.tab-stack,
+.tabbrowser-tab {
+  display:    none !important;
+  visibility: collapse !important;
 }
 
-#astra-sidebar.collapsed {
-  width: var(--astra-sidebar-mini-width);
+/* Kill title bar */
+#titlebar {
+  display:    none !important;
+  visibility: collapse !important;
 }
 
-/* Sidebar logo/brand area */
-#astra-sidebar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px 16px;
-  border-bottom: 1px solid var(--astra-glass-border);
-  margin-bottom: 8px;
+/* Kill Firefox's sidebar */
+#sidebar-box,
+#sidebar-splitter,
+#sidebar-header {
+  display:    none !important;
+  visibility: collapse !important;
 }
 
-#astra-sidebar-brand .brand-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--astra-sunset-violet), var(--astra-sunset-magenta));
-  box-shadow: var(--astra-accent-glow);
-  flex-shrink: 0;
+/* Kill bookmarks bar */
+#PersonalToolbar {
+  display:    none !important;
+  visibility: collapse !important;
 }
 
-#astra-sidebar-brand .brand-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--astra-text-primary);
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  opacity: 1;
-  transition: opacity var(--astra-transition-fast);
+/* Kill Firefox's default nav-bar — we build our own */
+#nav-bar,
+#navigator-toolbox {
+  display:    none !important;
+  visibility: collapse !important;
 }
 
-#astra-sidebar.collapsed .brand-name {
-  opacity: 0;
-  pointer-events: none;
+/* Kill status bar */
+#statusbar,
+#status-bar {
+  display:    none !important;
 }
 
-/* ==========================================================================
-   Tab Items in Sidebar
-   ========================================================================== */
-
-.astra-tab-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: var(--astra-border-radius-sm);
-  cursor: pointer;
-  color: var(--astra-text-secondary);
-  transition:
-    background var(--astra-transition-fast),
-    color var(--astra-transition-fast),
-    box-shadow var(--astra-transition-fast);
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
+/* Strip all default box borders */
+box, vbox, hbox {
+  border:     none !important;
 }
 
-.astra-tab-item:hover {
-  background: var(--astra-glass-bg-light);
-  color: var(--astra-text-primary);
+/* Kill focus outlines in chrome */
+*:focus {
+  outline: none !important;
 }
 
-.astra-tab-item.active {
-  background: linear-gradient(135deg, rgba(74, 27, 140, 0.6), rgba(139, 34, 82, 0.4));
-  color: var(--astra-text-primary);
-  box-shadow: inset 0 0 0 1px var(--astra-glass-border), var(--astra-accent-glow);
+
+/* ─────────────────────────────────────────────
+   03 · WINDOW + CONTENT WALLPAPER
+   Warm Indian sunset gradient fills the content area.
+   ───────────────────────────────────────────── */
+
+/* Wallpaper strategy: bundle the user's current Windows wallpaper as a static
+   asset so backdrop-filter has something real to blur — works on Win10/11/all.
+   TODO: Phase 5 — Add wallpaper picker in Astra Settings so users can choose
+   their own wallpaper. Also add auto-detect Windows wallpaper on startup via JS. */
+#main-window {
+  background:           url("chrome://browser/skin/astra/wallpaper.jpg")
+                        no-repeat center center fixed,
+                        radial-gradient(ellipse at 20% 30%,
+                          #c8a878 0%, #a08858 30%,
+                          #708070 60%, #405048 100%
+                        ) !important;
+  background-size:      cover, cover !important;
+  color:                rgba(0,0,0,0.85) !important;
+  overflow:             hidden !important;
+  /* FEATURE 3: GPU compositing layer */
+  transform:            translateZ(0) !important;
+  backface-visibility:  hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  will-change:          opacity, background-position !important;
+  transition:           opacity 0.4s ease !important;
 }
 
-/* Active tab left border indicator */
-.astra-tab-item.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 20%;
-  height: 60%;
-  width: 3px;
-  border-radius: 0 2px 2px 0;
-  background: var(--astra-accent);
-  box-shadow: var(--astra-accent-glow);
+/* Make ALL intermediate containers transparent — wallpaper bleeds through */
+#browser, #appcontent,
+#tabbrowser-tabpanels, .browserStack,
+.browserContainer, browser,
+#tabbrowser-tabbox {
+  background: transparent !important;
 }
 
-.astra-tab-item .tab-favicon {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  object-fit: contain;
+/* Content area flex — keep layout intact */
+#appcontent,
+.browserContainer,
+.browserStack {
+  flex:     1 !important;
+  position: relative !important;
 }
 
-.astra-tab-item .tab-title {
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-  transition: opacity var(--astra-transition-fast);
+/* Web view panel — floating card with rounded corners */
+tabbrowser-tabpanels,
+#tabbrowser-tabpanels {
+  flex:            1 !important;
+  margin:          12px 12px 12px 0 !important;
+  border-radius:   16px !important;
+  overflow:        hidden !important;
+  box-shadow:      0 8px 32px rgba(0, 0, 0, 0.18) !important;
 }
 
-#astra-sidebar.collapsed .tab-title {
-  opacity: 0;
-  width: 0;
+browser[type="content"],
+browser[primary="true"] {
+  border-radius:   inherit !important;
 }
 
-/* ==========================================================================
-   Toolbar / URL Bar
-   ========================================================================== */
-
-#astra-toolbar {
-  height: var(--astra-toolbar-height);
-  background: var(--astra-glass-bg);
-  backdrop-filter: blur(var(--astra-glass-blur));
-  -webkit-backdrop-filter: blur(var(--astra-glass-blur));
-  border-bottom: 1px solid var(--astra-glass-border);
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  gap: 8px;
+/* Fullscreen — strip margins */
+:-moz-full-screen #astra-sidebar-container,
+:-moz-full-screen #astra-topbar {
+  display: none !important;
+}
+:-moz-full-screen tabbrowser-tabpanels,
+:-moz-full-screen #tabbrowser-tabpanels {
+  margin:        0 !important;
+  border-radius: 0 !important;
 }
 
-#astra-urlbar {
-  flex: 1;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid var(--astra-glass-border);
-  border-radius: 20px;
-  padding: 0 14px;
-  color: var(--astra-text-primary);
-  font-size: 13px;
-  outline: none;
-  transition:
-    border-color var(--astra-transition-fast),
-    background var(--astra-transition-fast),
-    box-shadow var(--astra-transition-fast);
+
+/* ─────────────────────────────────────────────
+   04 · SIDEBAR CONTAINER
+   Light frosted glass panel, full height, 240px wide.
+   NOT floating — full-height edge panel like Arc.
+   ───────────────────────────────────────────── */
+
+/* vbox selector covers the XUL element injected by browser.xhtml patch;
+   div selector covers the JS-created fallback element. Both get identical styles.
+
+   backdrop-filter now has a real painted surface to blur (#main-window wallpaper),
+   so blur(24px) produces genuine frosted glass on Win10, Win11, and all users. */
+vbox#astra-sidebar-container,
+#astra-sidebar-container {
+  /* Fixed size */
+  width:            var(--astra-sidebar-width) !important;
+  min-width:        var(--astra-sidebar-width) !important;
+  max-width:        var(--astra-sidebar-width) !important;
+  height:           100vh !important;
+
+  /* Flex column layout */
+  display:          flex !important;
+  flex-direction:   column !important;
+  flex-shrink:      0 !important;
+
+  /* Frosted glass over the wallpaper */
+  background:              rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter:         blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+
+  /* Right edge separator */
+  border-right:     1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:       var(--astra-glass-shadow) !important;
+
+  /* Typography */
+  font-family:      var(--astra-font) !important;
+
+  /* Stacking context */
+  position:         relative !important;
+  z-index:          1000 !important;
+  overflow:         hidden !important;
+
+  /* FEATURE 3: GPU compositing layer */
+  transform:            translateZ(0) !important;
+  backface-visibility:  hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  will-change:          opacity, transform !important;
+
+  /* Slim scrollbar */
+  scrollbar-width:  none !important;
 }
 
-#astra-urlbar:focus {
-  border-color: var(--astra-accent);
-  background: rgba(255, 255, 255, 0.11);
-  box-shadow: var(--astra-accent-glow);
+/* Hide scrollbar entirely */
+vbox#astra-sidebar-container::-webkit-scrollbar,
+#astra-sidebar-container::-webkit-scrollbar {
+  display: none !important;
 }
 
-/* ==========================================================================
-   Workspaces Panel
-   ========================================================================== */
 
-#astra-workspaces {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--astra-glass-border);
-  margin-bottom: 8px;
+/* ── A/B Wallpaper Layers — GPU composited crossfade ──── */
+#astra-wp-a,
+#astra-wp-b {
+  position:              fixed !important;
+  inset:                 0 !important;
+  z-index:               0 !important;
+  background-size:       cover !important;
+  background-position:   center !important;
+  background-repeat:     no-repeat !important;
+  background-attachment: fixed !important;
+  transition:            opacity 0.5s ease !important;
+  pointer-events:        none !important;
+  transform:             translateZ(0) !important;
+  backface-visibility:   hidden !important;
+  will-change:           opacity !important;
+}
+
+
+/* HTML-namespace wrapper inside the XUL vbox.
+   All visual sidebar CSS targets children of this wrapper. */
+#astra-sidebar-inner {
+  width:           100% !important;
+  height:          100% !important;
+  min-height:      100% !important;
+  display:         flex !important;
+  flex-direction:  column !important;
+  overflow:        hidden !important;
+  overflow-y:      auto !important;
+  scrollbar-width: none !important;
+  font-family:     var(--astra-font) !important;
+  color:           var(--astra-text-primary) !important;
+  box-sizing:      border-box !important;
+  padding-top:     8px !important;
+  background:      transparent !important;
+}
+
+#astra-sidebar-inner::-webkit-scrollbar {
+  display: none !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   05 · TRAFFIC LIGHTS (macOS ●●●)
+   ───────────────────────────────────────────── */
+
+#astra-traffic-lights {
+  display:      flex !important;
+  align-items:  center !important;
+  gap:          8px !important;
+  padding:      14px 20px 8px !important;
+  flex-shrink:  0 !important;
+  /* Makes window draggable from this area on Linux/Win */
+  -moz-window-dragging: drag !important;
+}
+
+.astra-traffic-dot {
+  width:         12px !important;
+  height:        12px !important;
+  border-radius: 50% !important;
+  cursor:        default !important;
+  flex-shrink:   0 !important;
+  transition:    filter var(--t-fast) !important;
+}
+
+.astra-traffic-dot:hover {
+  filter: brightness(1.2) !important;
+}
+
+.astra-traffic-dot.red    { background: #FF5F57 !important; }
+.astra-traffic-dot.yellow { background: #FFBD2E !important; }
+.astra-traffic-dot.green  { background: #28C840 !important; }
+
+
+/* ─────────────────────────────────────────────
+   06 · NEW TAB BUTTON
+   ───────────────────────────────────────────── */
+
+#astra-new-tab {
+  margin:          6px 10px 8px !important;
+  padding:         10px 14px !important;
+  border-radius:   var(--astra-r-sm) !important;
+  cursor:          pointer !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: space-between !important;
+  font-size:       14px !important;
+  font-family:     var(--astra-font) !important;
+  color:           var(--astra-text-primary) !important;
+  background:      transparent !important;
+  border:          none !important;
+  -moz-user-select: none !important;
+  transition:      background var(--t-fast) !important;
+  flex-shrink:     0 !important;
+}
+
+#astra-new-tab:hover {
+  background: var(--astra-hover-bg) !important;
+}
+
+.astra-new-tab-left {
+  display:    flex !important;
+  align-items: center !important;
+  gap:         8px !important;
+  color:       var(--astra-text-primary) !important;
+}
+
+.astra-new-tab-plus {
+  display:        flex !important;
+  align-items:    center !important;
+  justify-content: center !important;
+  width:          20px !important;
+  height:         20px !important;
+  font-size:      18px !important;
+  line-height:    1 !important;
+  color:          var(--astra-text-secondary) !important;
+}
+
+.astra-shortcut {
+  font-size:   12px !important;
+  color:       var(--astra-text-hint) !important;
+  font-family: var(--astra-font) !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   07 · NAVIGATION ITEMS
+   Home, Search, AI Assistant, Tabs, Split View
+   ───────────────────────────────────────────── */
+
+#astra-nav {
+  padding:     0 10px !important;
+  flex-shrink: 0 !important;
+}
+
+.astra-nav-item {
+  display:         flex !important;
+  align-items:     center !important;
+  padding:         0 14px !important;
+  height:          36px !important;
+  border-radius:   var(--astra-r-sm) !important;
+  cursor:          pointer !important;
+  font-size:       14px !important;
+  font-family:     var(--astra-font) !important;
+  color:           var(--astra-text-secondary) !important;
+  gap:             10px !important;
+  margin-bottom:   2px !important;
+  -moz-user-select: none !important;
+  transition:      background var(--t-fast), color var(--t-fast) !important;
+  border:          1px solid transparent !important;
+  box-sizing:      border-box !important;
+}
+
+.astra-nav-item:hover {
+  background: var(--astra-hover-bg) !important;
+  color:      var(--astra-text-primary) !important;
+}
+
+.astra-nav-item.active {
+  background:  var(--astra-active-bg) !important;
+  color:       var(--astra-text-primary) !important;
+  font-weight: 500 !important;
+}
+
+/* Icon wrapper */
+.astra-nav-icon {
+  width:        16px !important;
+  height:       16px !important;
+  flex-shrink:  0 !important;
+  display:      flex !important;
+  align-items:  center !important;
+  justify-content: center !important;
+  opacity:      0.65 !important;
+}
+
+.astra-nav-item.active .astra-nav-icon,
+.astra-nav-item:hover  .astra-nav-icon {
+  opacity: 1 !important;
+}
+
+.astra-nav-icon svg {
+  width:  16px !important;
+  height: 16px !important;
+}
+
+/* Label text */
+.astra-nav-label {
+  flex:      1 !important;
+  overflow:  hidden !important;
+  text-overflow: ellipsis !important;
+  white-space:   nowrap !important;
+}
+
+/* Keyboard shortcut hint */
+.astra-nav-shortcut {
+  margin-left: auto !important;
+  font-size:   12px !important;
+  color:       var(--astra-text-hint) !important;
+  flex-shrink: 0 !important;
+  font-family: var(--astra-font) !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   08 · SECTION LABELS
+   "Pinned", "Workspaces" — small caps + optional + button
+   ───────────────────────────────────────────── */
+
+.astra-section-label {
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: space-between !important;
+  padding:         14px 14px 6px !important;
+  font-size:       11px !important;
+  font-weight:     500 !important;
+  font-family:     var(--astra-font) !important;
+  color:           var(--astra-text-hint) !important;
+  letter-spacing:  0.3px !important;
+  text-transform:  none !important;
+  flex-shrink:     0 !important;
+  -moz-user-select: none !important;
+}
+
+.astra-section-add {
+  width:           20px !important;
+  height:          20px !important;
+  cursor:          pointer !important;
+  color:           var(--astra-text-hint) !important;
+  font-size:       16px !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: center !important;
+  border-radius:   4px !important;
+  transition:      background var(--t-fast), color var(--t-fast) !important;
+  flex-shrink:     0 !important;
+}
+
+.astra-section-add:hover {
+  background: var(--astra-hover-bg) !important;
+  color:      var(--astra-text-primary) !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   09 · PINNED SITES
+   Colored favicon squares + site name
+   ───────────────────────────────────────────── */
+
+#astra-pinned {
+  padding:     0 10px !important;
+  flex-shrink: 0 !important;
+}
+
+.astra-pinned-item {
+  display:         flex !important;
+  align-items:     center !important;
+  padding:         0 4px !important;
+  height:          34px !important;
+  border-radius:   var(--astra-r-sm) !important;
+  cursor:          pointer !important;
+  font-size:       14px !important;
+  font-family:     var(--astra-font) !important;
+  color:           var(--astra-text-secondary) !important;
+  gap:             10px !important;
+  margin-bottom:   1px !important;
+  -moz-user-select: none !important;
+  transition:      background var(--t-fast), color var(--t-fast) !important;
+}
+
+.astra-pinned-item:hover {
+  background: var(--astra-hover-bg) !important;
+  color:      var(--astra-text-primary) !important;
+}
+
+/* Colored favicon square */
+.astra-favicon {
+  width:           20px !important;
+  height:          20px !important;
+  border-radius:   5px !important;
+  flex-shrink:     0 !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: center !important;
+  font-size:       10px !important;
+  font-weight:     700 !important;
+  color:           white !important;
+  font-family:     var(--astra-font) !important;
+  line-height:     1 !important;
+  overflow:        hidden !important;
+}
+
+.astra-pinned-label {
+  flex:        1 !important;
+  overflow:    hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   10 · WORKSPACES
+   Coloured circle + name + chevron
+   ───────────────────────────────────────────── */
+
+#astra-workspaces-list {
+  padding:     0 10px !important;
+  flex-shrink: 0 !important;
 }
 
 .astra-workspace-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: var(--astra-border-radius-sm);
-  cursor: pointer;
-  color: var(--astra-text-secondary);
-  transition: background var(--astra-transition-fast), color var(--astra-transition-fast);
+  display:         flex !important;
+  align-items:     center !important;
+  padding:         0 4px !important;
+  height:          36px !important;
+  border-radius:   var(--astra-r-sm) !important;
+  cursor:          pointer !important;
+  font-size:       14px !important;
+  font-family:     var(--astra-font) !important;
+  color:           var(--astra-text-secondary) !important;
+  gap:             10px !important;
+  margin-bottom:   2px !important;
+  -moz-user-select: none !important;
+  transition:      background var(--t-fast), color var(--t-fast) !important;
 }
 
 .astra-workspace-item:hover {
-  background: var(--astra-glass-bg-light);
-  color: var(--astra-text-primary);
+  background: var(--astra-hover-bg) !important;
+  color:      var(--astra-text-primary) !important;
 }
 
-.astra-workspace-item.active {
-  color: var(--astra-accent);
-}
-
+/* Coloured circle/square */
 .astra-workspace-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  flex-shrink: 0;
+  width:         18px !important;
+  height:        18px !important;
+  border-radius: 5px !important;
+  flex-shrink:   0 !important;
+  display:       inline-block !important;
 }
 
-/* ==========================================================================
-   Pinned Sites / Speed Dial
-   ========================================================================== */
-
-#astra-pinned-sites {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  padding: 16px;
+.astra-workspace-name {
+  flex:        1 !important;
+  overflow:    hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
-.astra-pinned-site {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 8px;
-  border-radius: var(--astra-border-radius);
-  background: var(--astra-glass-bg);
-  border: 1px solid var(--astra-glass-border);
-  cursor: pointer;
+.astra-workspace-chevron {
+  margin-left: auto !important;
+  font-size:   14px !important;
+  color:       var(--astra-text-hint) !important;
+  flex-shrink: 0 !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   11 · SPACER + PROFILE SECTION
+   Profile card pinned to bottom of sidebar.
+   ───────────────────────────────────────────── */
+
+.astra-spacer {
+  flex:        1 !important;
+  min-height:  16px !important;
+}
+
+#astra-profile {
+  margin:          0 10px 8px !important;
+  padding:         10px 12px !important;
+  background:      rgba(0, 0, 0, 0.05) !important;
+  border-radius:   var(--astra-r-md) !important;
+  display:         flex !important;
+  align-items:     center !important;
+  gap:             10px !important;
+  cursor:          pointer !important;
+  flex-shrink:     0 !important;
+  -moz-user-select: none !important;
+  transition:      background var(--t-fast) !important;
+}
+
+#astra-profile:hover {
+  background: rgba(0, 0, 0, 0.09) !important;
+}
+
+.astra-avatar {
+  width:           28px !important;
+  height:          28px !important;
+  border-radius:   50% !important;
+  background:      linear-gradient(135deg, #FF6B35, #F7C59F) !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: center !important;
+  font-size:       12px !important;
+  font-weight:     600 !important;
+  color:           white !important;
+  flex-shrink:     0 !important;
+  font-family:     var(--astra-font) !important;
+}
+
+.astra-profile-name {
+  font-size:   14px !important;
+  font-family: var(--astra-font) !important;
+  color:       var(--astra-text-primary) !important;
+  font-weight: 500 !important;
+  flex:        1 !important;
+  overflow:    hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.astra-profile-more {
+  font-size:      14px !important;
+  color:          var(--astra-text-hint) !important;
+  letter-spacing: 2px !important;
+  flex-shrink:    0 !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   12 · BOTTOM ICON BAR
+   ⚙  🛡  🌙  →   (4 icons, evenly spaced)
+   ───────────────────────────────────────────── */
+
+#astra-bottom-bar {
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: space-around !important;
+  padding:         10px 20px 14px !important;
+  flex-shrink:     0 !important;
+  margin-top:      auto !important;
+}
+
+.astra-bottom-icon {
+  width:           32px !important;
+  height:          32px !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: center !important;
+  border-radius:   var(--astra-r-sm) !important;
+  cursor:          pointer !important;
+  color:           rgba(0, 0, 0, 0.40) !important;
+  -moz-user-select: none !important;
   transition:
-    background var(--astra-transition-base),
-    transform var(--astra-transition-fast),
-    box-shadow var(--astra-transition-base);
+    background var(--t-fast),
+    color      var(--t-fast),
+    transform  var(--t-spring) !important;
 }
 
-.astra-pinned-site:hover {
-  background: var(--astra-glass-bg-light);
-  transform: translateY(-2px);
-  box-shadow: var(--astra-glass-shadow);
+.astra-bottom-icon:hover {
+  background: var(--astra-hover-bg) !important;
+  color:      rgba(0, 0, 0, 0.75) !important;
+  transform:  scale(1.10) !important;
 }
 
-.astra-pinned-site .site-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  object-fit: contain;
+.astra-bottom-icon svg {
+  width:  18px !important;
+  height: 18px !important;
 }
 
-.astra-pinned-site .site-label {
-  font-size: 11px;
-  color: var(--astra-text-secondary);
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
+
+/* ─────────────────────────────────────────────
+   13 · LAYOUT: SIDEBAR + CONTENT FLEX ROW
+   #browser is the parent that holds both.
+   ───────────────────────────────────────────── */
+
+#browser {
+  display:        flex !important;
+  flex-direction: row !important;
+  flex:           1 !important;
+  overflow:       hidden !important;
+  background:     transparent !important;
 }
 
-/* ==========================================================================
-   New Tab Page
-   ========================================================================== */
 
-#astra-newtab {
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(74, 27, 140, 0.4) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(212, 83, 42, 0.3) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 80%, rgba(139, 34, 82, 0.3) 0%, transparent 50%),
-    linear-gradient(135deg, #0D0820 0%, #1A1035 40%, #2D1B69 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 60px 24px 24px;
-  color: var(--astra-text-primary);
+/* ─────────────────────────────────────────────
+   14 · ASTRA LOGO CARD (center of content area)
+   ───────────────────────────────────────────── */
+
+#astra-logo-card {
+  position:        absolute !important;
+  top:             50% !important;
+  left:            50% !important;
+  transform:       translate(-50%, -50%) !important;
+  width:           180px !important;
+  height:          180px !important;
+  background:      rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(20px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+  border:          1px solid rgba(255, 255, 255, 0.40) !important;
+  border-radius:   32px !important;
+  box-shadow:      0 8px 32px rgba(0, 0, 0, 0.10) !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: center !important;
+  z-index:         10 !important;
+  pointer-events:  none !important;
 }
 
-#astra-newtab-greeting {
-  font-size: 28px;
-  font-weight: 300;
-  margin-bottom: 32px;
-  color: var(--astra-text-primary);
-  text-shadow: 0 2px 20px rgba(240, 165, 0, 0.3);
+#astra-logo-card svg {
+  width:  100px !important;
+  height: 100px !important;
 }
 
-/* ==========================================================================
-   AI Assistant Panel
-   ========================================================================== */
 
-#astra-ai-panel {
-  width: 320px;
-  background: var(--astra-glass-bg);
-  backdrop-filter: blur(var(--astra-glass-blur)) saturate(1.4);
-  -webkit-backdrop-filter: blur(var(--astra-glass-blur)) saturate(1.4);
-  border-left: 1px solid var(--astra-glass-border);
-  box-shadow: var(--astra-glass-shadow);
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  position: fixed;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 200;
-  transform: translateX(100%);
-  transition: transform var(--astra-transition-base);
+/* ─────────────────────────────────────────────
+   15 · CUSTOM TOP BAR (replaces Firefox nav-bar)
+   Warm frosted glass strip: [←][→][↺] [url bar] [★][⬇][⊟]
+   ───────────────────────────────────────────── */
+
+#astra-topbar {
+  display:         flex !important;
+  align-items:     center !important;
+  height:          48px !important;
+  padding:         0 12px !important;
+  gap:             8px !important;
+  flex-shrink:     0 !important;
+
+  background:      rgba(240, 238, 234, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom:   1px solid rgba(0, 0, 0, 0.08) !important;
+
+  font-family:     var(--astra-font) !important;
+  -moz-window-dragging: drag !important;
 }
 
-#astra-ai-panel.open {
-  transform: translateX(0);
+/* Navigation buttons: ← → ↺ */
+.astra-nav-btn {
+  width:           28px !important;
+  height:          28px !important;
+  border-radius:   6px !important;
+  border:          none !important;
+  background:      transparent !important;
+  cursor:          pointer !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: center !important;
+  color:           rgba(0, 0, 0, 0.50) !important;
+  flex-shrink:     0 !important;
+  -moz-user-select: none !important;
+  transition:      background var(--t-fast), color var(--t-fast) !important;
 }
 
-#astra-ai-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--astra-glass-border);
+.astra-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color:      rgba(0, 0, 0, 0.80) !important;
 }
 
-#astra-ai-panel-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--astra-text-primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.astra-nav-btn:disabled,
+.astra-nav-btn[disabled] {
+  opacity:         0.30 !important;
+  pointer-events:  none !important;
 }
 
-#astra-ai-panel-title::before {
-  content: '✦';
-  color: var(--astra-accent);
-  font-size: 16px;
+.astra-nav-btn svg {
+  width:  16px !important;
+  height: 16px !important;
 }
 
-#astra-ai-messages {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-bottom: 16px;
+/* URL bar pill */
+#astra-urlbar {
+  flex:            1 !important;
+  height:          32px !important;
+  background:      rgba(255, 255, 255, 0.70) !important;
+  border:          1px solid rgba(0, 0, 0, 0.10) !important;
+  border-radius:   var(--astra-r-md) !important;
+  display:         flex !important;
+  align-items:     center !important;
+  padding:         0 12px !important;
+  gap:             8px !important;
+  cursor:          text !important;
+  transition:
+    border-color var(--t-fast),
+    box-shadow   var(--t-fast),
+    background   var(--t-fast) !important;
 }
 
-#astra-ai-messages::-webkit-scrollbar {
-  width: 4px;
+#astra-urlbar:focus-within {
+  background:  rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(0, 122, 255, 0.50) !important;
+  box-shadow:  0 0 0 3px rgba(0, 122, 255, 0.12) !important;
 }
 
-#astra-ai-messages::-webkit-scrollbar-track {
-  background: transparent;
+.astra-urlbar-icon svg {
+  width:   14px !important;
+  height:  14px !important;
+  color:   rgba(0, 0, 0, 0.35) !important;
+  flex-shrink: 0 !important;
 }
 
-#astra-ai-messages::-webkit-scrollbar-thumb {
-  background: var(--astra-glass-border);
-  border-radius: 2px;
+#astra-urlbar-input {
+  flex:        1 !important;
+  border:      none !important;
+  background:  transparent !important;
+  font-size:   13px !important;
+  font-family: var(--astra-font) !important;
+  color:       rgba(0, 0, 0, 0.80) !important;
+  outline:     none !important;
+  min-width:   0 !important;
 }
 
-.astra-ai-message {
-  padding: 10px 12px;
-  border-radius: var(--astra-border-radius-sm);
-  font-size: 13px;
-  line-height: 1.5;
-  max-width: 90%;
+#astra-urlbar-input::placeholder {
+  color: rgba(0, 0, 0, 0.35) !important;
 }
 
-.astra-ai-message.user {
-  background: linear-gradient(135deg, rgba(74, 27, 140, 0.5), rgba(139, 34, 82, 0.35));
-  border: 1px solid var(--astra-glass-border);
-  align-self: flex-end;
-  color: var(--astra-text-primary);
+.astra-urlbar-hint {
+  font-size:   12px !important;
+  color:       rgba(0, 0, 0, 0.30) !important;
+  flex-shrink: 0 !important;
+  font-family: var(--astra-font) !important;
 }
 
-.astra-ai-message.assistant {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--astra-glass-border);
-  align-self: flex-start;
-  color: var(--astra-text-secondary);
+/* Right-side toolbar buttons (★ ⬇ ⊟) */
+.astra-toolbar-btn {
+  width:           28px !important;
+  height:          28px !important;
+  border-radius:   6px !important;
+  border:          none !important;
+  background:      transparent !important;
+  cursor:          pointer !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: center !important;
+  color:           rgba(0, 0, 0, 0.50) !important;
+  flex-shrink:     0 !important;
+  -moz-user-select: none !important;
+  transition:      background var(--t-fast), color var(--t-fast) !important;
 }
 
-#astra-ai-input-area {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
+.astra-toolbar-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color:      rgba(0, 0, 0, 0.80) !important;
 }
 
-#astra-ai-input {
-  flex: 1;
-  min-height: 36px;
-  max-height: 120px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid var(--astra-glass-border);
-  border-radius: var(--astra-border-radius-sm);
-  padding: 8px 12px;
-  color: var(--astra-text-primary);
-  font-size: 13px;
-  resize: none;
-  outline: none;
-  transition: border-color var(--astra-transition-fast);
+.astra-toolbar-btn svg {
+  width:  16px !important;
+  height: 16px !important;
 }
 
-#astra-ai-input:focus {
-  border-color: var(--astra-accent);
-}
 
-#astra-ai-send-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--astra-border-radius-sm);
-  background: linear-gradient(135deg, var(--astra-sunset-violet), var(--astra-sunset-magenta));
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 16px;
-  transition: transform var(--astra-transition-fast), box-shadow var(--astra-transition-fast);
-  flex-shrink: 0;
-}
-
-#astra-ai-send-btn:hover {
-  transform: scale(1.05);
-  box-shadow: var(--astra-accent-glow);
-}
-
-/* ==========================================================================
-   Scrollbar Styling
-   ========================================================================== */
+/* ─────────────────────────────────────────────
+   GLOBAL SCROLLBAR
+   ───────────────────────────────────────────── */
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: var(--astra-glass-border) transparent;
+  scrollbar-width:  thin !important;
+  scrollbar-color:  rgba(0, 0, 0, 0.15) transparent !important;
 }
 
-/* ==========================================================================
-   Utility Classes
-   ========================================================================== */
-
-.astra-glass {
-  background: var(--astra-glass-bg);
-  backdrop-filter: blur(var(--astra-glass-blur));
-  -webkit-backdrop-filter: blur(var(--astra-glass-blur));
-  border: 1px solid var(--astra-glass-border);
-  box-shadow: var(--astra-glass-shadow);
-}
-
-.astra-gradient-text {
-  background: linear-gradient(135deg, var(--astra-sunset-gold), var(--astra-sunset-magenta));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+::selection {
+  background: rgba(0, 122, 255, 0.20) !important;
+  color: inherit !important;
 }

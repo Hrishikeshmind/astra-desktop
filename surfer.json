@@ -1,4 +1,7 @@
 {
+  "name": "Unknown surfer build",
+  "vendor": "Unknown",
+  "appId": "unknown.appid",
   "binaryName": "astra",
   "version": {
     "product": "firefox",
@@ -24,6 +27,7 @@
     }
   },
   "license": {
-    "ignoredFiles": []
+    "ignoredFiles": [],
+    "licenseType": "MPL-2.0"
   }
 }

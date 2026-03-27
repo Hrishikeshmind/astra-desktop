@@ -1,0 +1,13 @@
+diff --git a/browser/base/jar.mn b/browser/base/jar.mn
+index b1f7121a1f3926fe3eb89540edb7dcbb68734039..69363479464ec6a0c13f24311c5a31c82cf64b0f 100644
+--- a/browser/base/jar.mn
++++ b/browser/base/jar.mn
+@@ -36,6 +36,8 @@ browser.jar:
+         content/browser/aboutTabCrashed.xhtml         (content/aboutTabCrashed.xhtml)
+         content/browser/blanktab.html                 (content/blanktab.html)
+         content/browser/browser.js                    (content/browser.js)
++        content/browser/astra-sidebar.js              (content/astra-sidebar.js)
++        content/browser/astra-ai.js                   (content/astra-ai.js)
+ *       content/browser/browser.xhtml                 (content/browser.xhtml)
+         content/browser/browser-a11yUtils.js          (content/browser-a11yUtils.js)
+         content/browser/browser-addons.js             (content/browser-addons.js)
